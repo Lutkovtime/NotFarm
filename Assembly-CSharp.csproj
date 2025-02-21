@@ -46,21 +46,19 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.37f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Project\Scripts\PlayerState.cs" />
-    <Compile Include="Assets\_Project\Scripts\IInteractable.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Scripts\PlayerInput.cs" />
-    <Compile Include="Assets\_Project\Scripts\ITool.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interface\IInventoryItem.cs" />
+    <Compile Include="Assets\_Project\Scripts\Player\PlayerInput.cs" />
+    <Compile Include="Assets\_Project\Scripts\Player\PlayerInteractions.cs" />
+    <Compile Include="Assets\_Project\Scripts\Inventory\Inventory.cs" />
+    <Compile Include="Assets\_Project\Scripts\Environment\GardenBed.cs" />
+    <Compile Include="Assets\_Project\Scripts\Environment\Bucket.cs" />
+    <Compile Include="Assets\_Project\Scripts\UI\InventoryUI.cs" />
+    <Compile Include="Assets\_Project\Scripts\Player\PlayerStats.cs" />
+    <Compile Include="Assets\_Project\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\_Project\Scripts\Interface\ITool.cs" />
     <Compile Include="Assets\_Project\Scripts\TopDownCamera.cs" />
-    <Compile Include="Assets\_Project\Environment\WaterSources\Scripts\Well.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Scripts\PlayerStats.cs" />
-    <Compile Include="Assets\_Project\Environment\Tools\Scripts\Bucket.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Ui\InventoryUI.cs" />
-    <Compile Include="Assets\_Project\Environment\Farmland\Scripts\GardenBed.cs" />
-    <Compile Include="Assets\_Project\Environment\Plants\Scripts\Seed.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Scripts\Inventory.cs" />
-    <Compile Include="Assets\_Project\Characters\Farmer\Scripts\PlayerInteractions.cs" />
-    <Compile Include="Assets\_Project\Scripts\IInventoryItem.cs" />
+    <Compile Include="Assets\_Project\Scripts\Environment\Seed.cs" />
+    <Compile Include="Assets\_Project\Scripts\Environment\Well.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.0.37f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
