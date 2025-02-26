@@ -1091,6 +1091,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1461964073 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7659901644891906598, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+  m_PrefabInstance: {fileID: 8332907610071118215}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1527020236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1269,6 +1274,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GardenBed
       objectReference: {fileID: 0}
+    - target: {fileID: 6318387471478787724, guid: c162242a0a974594f9fdcd9c2c6eead3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097874426060275056, guid: c162242a0a974594f9fdcd9c2c6eead3, type: 3}
+      propertyPath: flowerPrefab
+      value: 
+      objectReference: {fileID: 8415023912994481026, guid: 9bbf70d7e45b0a64ab40503faa46cdca, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1764,6 +1777,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bucket
       objectReference: {fileID: 0}
+    - target: {fileID: 8509799358622018761, guid: 17faf65de56c35941b471bac90b9bff3, type: 3}
+      propertyPath: <HasWater>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1994,6 +2011,26 @@ PrefabInstance:
       propertyPath: inventoryCanvas
       value: 
       objectReference: {fileID: 798203676}
+    - target: {fileID: 8086593776529412293, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: <Inventory>k__BackingField
+      value: 
+      objectReference: {fileID: 8332907610071118219}
+    - target: {fileID: 8086593776529412293, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: <InventoryUI>k__BackingField
+      value: 
+      objectReference: {fileID: 798203678}
+    - target: {fileID: 8086593776529412293, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: <InventoryCanvas>k__BackingField
+      value: 
+      objectReference: {fileID: 798203676}
+    - target: {fileID: 8086593776529412293, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: <InteractionPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 1461964073}
+    - target: {fileID: 8086593776529412293, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: <InteractionLayer>k__BackingField.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 8339561356346963633, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2044,6 +2081,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8339561356346963633, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
   m_PrefabInstance: {fileID: 8332907610071118215}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8332907610071118219 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7763586384369091668, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+  m_PrefabInstance: {fileID: 8332907610071118215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d170502285799d418d3c2b8664b6682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9052237755225068753
 PrefabInstance:
   m_ObjectHideFlags: 0

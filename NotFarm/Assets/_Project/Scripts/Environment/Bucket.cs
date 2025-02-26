@@ -1,3 +1,4 @@
+// filepath: /C:/Проекты Юнити/NotFarm/Assets/_Project/Scripts/Environment/Bucket.cs
 using UnityEngine;
 using _Project.Scripts.Interface;
 
@@ -5,9 +6,21 @@ namespace _Project.Scripts.Environment
 {
     public class Bucket : MonoBehaviour, ITool
     {
-        [field: SerializeField] public bool HasWater { get; set; }
+        public bool HasWater
+        {
+            get
+            {
+                return _hasWater;
+            }
+            set
+            {
+                _hasWater = value;
+                UpdateMaterial();
+            }
+        }
 
-        [field: SerializeField] public bool IsCarried { get; private set; }
+        private bool _hasWater;
+        public bool IsCarried { get; private set; }
 
         [SerializeField] private Material waterMaterial;
         [SerializeField] private Material emptyMaterial;
@@ -46,7 +59,7 @@ namespace _Project.Scripts.Environment
 
         private void UpdateMaterial()
         {
-            if (_bucketRenderer == null) return;
+            if (_bucketRenderer is null) return;
             _bucketRenderer.material = HasWater ? waterMaterial : emptyMaterial;
         }
     }

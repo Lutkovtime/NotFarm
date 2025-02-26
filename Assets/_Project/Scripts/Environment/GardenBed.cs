@@ -4,15 +4,17 @@ namespace _Project.Scripts.Environment
 {
     public class GardenBed : MonoBehaviour
     {
+        [field: SerializeField] public bool IsWet { get; private set; }
+        [field: SerializeField] public float DryTime { get; private set; } = 30f;
+        [field: SerializeField] public float InteractionRadius { get; private set; } = 2.0f;
+
         [SerializeField] private Material dryMaterial;
         [SerializeField] private Material wetMaterial;
+        [SerializeField] private Flower flowerPrefab;
 
-        [SerializeField] private float dryTime = 30f;
-        [SerializeField] private float interactionRadius = 2.0f;
-
-        private bool isWet;
-        private float wetTimer;
+        private float _wetTimer;
         private MeshRenderer _meshRenderer;
+        private Flower _currentFlower;
 
         private void Start()
         {
@@ -22,10 +24,10 @@ namespace _Project.Scripts.Environment
 
         private void Update()
         {
-            if (isWet)
+            if (IsWet)
             {
-                wetTimer -= Time.deltaTime;
-                if (wetTimer <= 0)
+                _wetTimer -= Time.deltaTime;
+                if (_wetTimer <= 0)
                 {
                     SetDry();
                 }
@@ -36,22 +38,22 @@ namespace _Project.Scripts.Environment
 
         private void SetDry()
         {
-            isWet = false;
+            IsWet = false;
             _meshRenderer.material = dryMaterial;
             Debug.Log("The garden bed is now dry.");
         }
 
         private void SetWet()
         {
-            isWet = true;
-            wetTimer = dryTime;
+            IsWet = true;
+            _wetTimer = DryTime;
             _meshRenderer.material = wetMaterial;
             Debug.Log("The garden bed is now wet.");
         }
 
         public void WaterPlot()
         {
-            if (!isWet)
+            if (!IsWet)
             {
                 SetWet();
             }
@@ -60,27 +62,45 @@ namespace _Project.Scripts.Environment
         private void CheckAndWater()
         {
             var results = new Collider[10];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, interactionRadius, results);
+            int size = Physics.OverlapSphereNonAlloc(transform.position, InteractionRadius, results);
 
             for (int i = 0; i < size; i++)
             {
-                if (results[i].TryGetComponent(out Bucket bucket))
+                if (results[i].TryGetComponent(out Bucket bucket) && bucket.IsCarried && bucket.HasWater)
                 {
-                    if (bucket.IsCarried && bucket.HasWater)
-                    {
-                        WaterPlot();
-                        bucket.HasWater = false;
-                        Debug.Log($"{bucket.name} watered the garden bed.");
-                        return;
-                    }
+                    WaterPlot();
+                    bucket.HasWater = false;
+                    Debug.Log($"{bucket.name} watered the garden bed.");
+                    return;
                 }
             }
+        }
+
+        public bool TryPlantSeed()
+        {
+            if (_currentFlower is not null)
+            {
+                Debug.Log("There is already a flower planted here.");
+                return false;
+            }
+
+            if (!IsWet)
+            {
+                Debug.Log("The garden bed is dry. Water it first!");
+                return false;
+            }
+
+            // Создаем цветок по центру грядки
+            _currentFlower = Instantiate(flowerPrefab, transform.position, Quaternion.identity);
+            _currentFlower.Initialize(this);
+            Debug.Log("Seed planted successfully!");
+            return true;
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, interactionRadius);
+            Gizmos.DrawWireSphere(transform.position, InteractionRadius);
         }
     }
 }
