@@ -6,31 +6,38 @@ namespace _Project.Scripts.UI
 {
     public class InventoryUI : MonoBehaviour
     {
-        [SerializeField] private RectTransform slotContainer;
-        [SerializeField] private GameObject slotPrefab;
+        [SerializeField] private RectTransform _slotContainer;
+        [SerializeField] private GameObject _slotPrefab;
+
+        public void InitializeSlots(int slotCount)
+        {
+            foreach (Transform child in _slotContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            for (int i = 0; i < slotCount; i++)
+            {
+                GameObject slot = Instantiate(_slotPrefab, _slotContainer);
+                slot.name = $"Slot_{i}";
+                UpdateSlot(i, null);
+            }
+        }
 
         public void UpdateSlot(int slotIndex, GameObject item)
         {
-            if (slotIndex < 0 || slotIndex >= slotContainer.childCount)
+            if (slotIndex < 0 || slotIndex >= _slotContainer.childCount)
             {
+                Debug.LogError($"Invalid slot index: {slotIndex}");
                 return;
             }
 
-            Transform slot = slotContainer.GetChild(slotIndex);
-            if (slot is null)
-            {
-                return;
-            }
-
+            Transform slot = _slotContainer.GetChild(slotIndex);
             Image icon = slot.GetComponent<Image>();
-            if (icon is null)
-            {
-                return;
-            }
 
-            if (item is not null && item.TryGetComponent(out IInventoryItem inventoryItem))
+            if (item != null && item.TryGetComponent(out IInventoryItem inventoryItem))
             {
-                icon.sprite = inventoryItem.GetIcon();
+                icon.sprite = inventoryItem.Icon;
                 icon.enabled = true;
             }
             else

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2252853848248161934}
   - component: {fileID: 5257475207619236453}
   - component: {fileID: 8097874426060275056}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GardenBed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6318387471478787724}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: -0.8, z: 10}
+  m_LocalPosition: {x: 10, y: -0.9, z: 10}
   m_LocalScale: {x: 3, y: 0.2, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fdf5ef210c468f8b1b702a17db8a10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dryMaterial: {fileID: 2100000, guid: 44991dc6830b4474a87ac24cabe64bb5, type: 2}
-  wetMaterial: {fileID: 2100000, guid: 3afc22aaf6a8945498d7685b402a05f7, type: 2}
-  dryTime: 10
-  interactionRadius: 2
+  _dryTime: 30
+  _interactionRadius: 2
+  _dryMaterial: {fileID: 2100000, guid: 44991dc6830b4474a87ac24cabe64bb5, type: 2}
+  _wetMaterial: {fileID: 2100000, guid: 3afc22aaf6a8945498d7685b402a05f7, type: 2}
+  _flowerPrefab: {fileID: 0}

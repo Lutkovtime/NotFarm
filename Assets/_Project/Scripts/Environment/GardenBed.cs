@@ -1,20 +1,23 @@
 using UnityEngine;
+using _Project.Scripts.Player;
 
 namespace _Project.Scripts.Environment
 {
     public class GardenBed : MonoBehaviour
     {
-        [field: SerializeField] public bool IsWet { get; private set; }
-        [field: SerializeField] public float DryTime { get; private set; } = 30f;
-        [field: SerializeField] public float InteractionRadius { get; private set; } = 2.0f;
-
-        [SerializeField] private Material dryMaterial;
-        [SerializeField] private Material wetMaterial;
-        [SerializeField] private Flower flowerPrefab;
+        [Header("Settings")]
+        [SerializeField] private float _dryTime = 30f;
+        [SerializeField] private float _interactionRadius = 2.0f;
+        [SerializeField] private Material _dryMaterial;
+        [SerializeField] private Material _wetMaterial;
+        [SerializeField] private Flower _flowerPrefab;
 
         private float _wetTimer;
         private MeshRenderer _meshRenderer;
         private Flower _currentFlower;
+        private bool _playerInTrigger;
+
+        public bool IsWet { get; private set; }
 
         private void Start()
         {
@@ -39,15 +42,15 @@ namespace _Project.Scripts.Environment
         private void SetDry()
         {
             IsWet = false;
-            _meshRenderer.material = dryMaterial;
+            _meshRenderer.material = _dryMaterial;
             Debug.Log("The garden bed is now dry.");
         }
 
         private void SetWet()
         {
             IsWet = true;
-            _wetTimer = DryTime;
-            _meshRenderer.material = wetMaterial;
+            _wetTimer = _dryTime;
+            _meshRenderer.material = _wetMaterial;
             Debug.Log("The garden bed is now wet.");
         }
 
@@ -62,7 +65,7 @@ namespace _Project.Scripts.Environment
         private void CheckAndWater()
         {
             var results = new Collider[10];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, InteractionRadius, results);
+            int size = Physics.OverlapSphereNonAlloc(transform.position, _interactionRadius, results);
 
             for (int i = 0; i < size; i++)
             {
@@ -78,6 +81,12 @@ namespace _Project.Scripts.Environment
 
         public bool TryPlantSeed()
         {
+            if (!_playerInTrigger)
+            {
+                Debug.Log("Player not in garden bed area");
+                return false;
+            }
+
             if (_currentFlower is not null)
             {
                 Debug.Log("There is already a flower planted here.");
@@ -90,17 +99,33 @@ namespace _Project.Scripts.Environment
                 return false;
             }
 
-            // Создаем цветок по центру грядки
-            _currentFlower = Instantiate(flowerPrefab, transform.position, Quaternion.identity);
+            Vector3 flowerPosition = transform.position + new Vector3(0, 0.3f, 0);
+            _currentFlower = Instantiate(_flowerPrefab, flowerPosition, Quaternion.identity);
             _currentFlower.Initialize(this);
             Debug.Log("Seed planted successfully!");
             return true;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent<PlayerInteractions>(out _))
+            {
+                _playerInTrigger = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent<PlayerInteractions>(out _))
+            {
+                _playerInTrigger = false;
+            }
+        }
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, InteractionRadius);
+            Gizmos.DrawWireSphere(transform.position, _interactionRadius);
         }
     }
 }

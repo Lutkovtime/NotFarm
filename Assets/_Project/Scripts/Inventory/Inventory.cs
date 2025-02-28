@@ -8,13 +8,18 @@ namespace _Project.Scripts.Inventory
     public class Inventory : MonoBehaviour
     {
         [field: SerializeField] public int MaxSlots { get; private set; } = 9;
-        [SerializeField] private InventoryUI inventoryUI;
+        [SerializeField] private InventoryUI _inventoryUI;
 
         private IInventoryItem[] _items;
 
         private void Awake()
         {
             _items = new IInventoryItem[MaxSlots];
+
+            if (_inventoryUI != null)
+                _inventoryUI.InitializeSlots(MaxSlots);
+            else
+                Debug.LogError("InventoryUI reference is missing!");
         }
 
         public bool AddItem(IInventoryItem item)
@@ -25,41 +30,38 @@ namespace _Project.Scripts.Inventory
                 {
                     _items[i] = item;
                     item.OnPickUp();
-
-                    inventoryUI?.UpdateSlot(i, (item as MonoBehaviour)?.gameObject);
+                    _inventoryUI.UpdateSlot(i, item.GameObject);
                     return true;
                 }
             }
             return false;
         }
 
-        public IInventoryItem RemoveItem(int slot)
+        private IInventoryItem RemoveItem(int slot)
         {
             if (slot < 0 || slot >= MaxSlots || _items[slot] == null) return null;
 
             IInventoryItem item = _items[slot];
             _items[slot] = null;
-            item.OnDrop(transform.position);
-
-            inventoryUI?.UpdateSlot(slot, null);
+            _inventoryUI.UpdateSlot(slot, null);
             return item;
         }
 
         public bool HasEmptySlot()
         {
-            return _items.Any(slot => slot == null);
+            foreach (IInventoryItem slot in _items)
+            {
+                if (slot == null)
+                    return true;
+            }
+            return false;
         }
 
-        public IInventoryItem GetItemInSlot(int slot)
-        {
-            if (slot < 0 || slot >= MaxSlots) return null;
-            return _items[slot];
-        }
+        public IInventoryItem GetItemInSlot(int slot) => (slot < 0 || slot >= MaxSlots) ? null : _items[slot];
 
-        public bool HasItem<T>() where T : IInventoryItem
-        {
-            return _items.Any(item => item is T);
-        }
+        public bool HasItem<T>() where T : IInventoryItem => _items.Any(item => item is T);
+
+        public T GetItem<T>() where T : class => _items.FirstOrDefault(item => item is T) as T;
 
         public bool TryUseItem<T>() where T : IInventoryItem
         {

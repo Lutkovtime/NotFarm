@@ -4,12 +4,23 @@ namespace _Project.Scripts.Environment
 {
     public class Flower : MonoBehaviour
     {
-        [field: SerializeField] public GameObject[] GrowthStages { get; private set; }
-        [field: SerializeField] public float TimePerStage { get; private set; } = 10f;
+        [Header("Growth Settings")]
+        [SerializeField] private Transform _flowerTransform;
+        [SerializeField] private float _timePerStage = 10f;
+        [SerializeField] private Vector3[] _stageScales = { 
+            new Vector3(0.1f, 0.1f, 0.1f), 
+            new Vector3(0.5f, 0.5f, 0.5f), 
+            new Vector3(1f, 1f, 1f)
+        };
 
-        private int _currentStage = -1;
+        [Header("Seed Settings")]
+        [SerializeField] private GameObject _seedPrefab;
+        [SerializeField] private int _seedsDropped = 2;
+
+        private int _currentStage;
         private float _growthTimer;
         private GardenBed _gardenBed;
+        private bool _isFullyGrown;
 
         public void Initialize(GardenBed gardenBed)
         {
@@ -19,54 +30,64 @@ namespace _Project.Scripts.Environment
 
         private void Start()
         {
-            if (GrowthStages == null || GrowthStages.Length != 3)
+            if (_flowerTransform == null)
             {
-                Debug.LogError("Growth stages not properly configured!");
+                Debug.LogError("Flower Transform is not assigned!");
                 enabled = false;
                 return;
             }
 
-            // Скрываем все стадии при старте
-            foreach (var stage in GrowthStages)
-            {
-                stage.SetActive(false);
-            }
+            _flowerTransform.localScale = _stageScales[0];
+            _currentStage = 0;
         }
 
         private void Update()
         {
-            if (_currentStage >= GrowthStages.Length - 1) return;
+            if (_isFullyGrown) return;
 
             if (_gardenBed.IsWet)
             {
                 _growthTimer += Time.deltaTime;
 
-                if (_growthTimer >= TimePerStage)
+                if (_growthTimer >= _timePerStage)
                 {
                     _growthTimer = 0;
                     ShowNextStage();
                 }
             }
-
-            Debug.Log($"Time until next stage: {TimePerStage - _growthTimer:F1} seconds");
         }
 
         private void ShowNextStage()
         {
-            if (_currentStage >= 0)
-                GrowthStages[_currentStage].SetActive(false);
-
             _currentStage++;
-            GrowthStages[_currentStage].SetActive(true);
 
-            Debug.Log($"Flower advanced to stage {_currentStage + 1}");
+            if (_currentStage >= _stageScales.Length)
+            {
+                _isFullyGrown = true;
+                Debug.Log("Flower is fully grown and ready to harvest!");
+            }
+            else
+            {
+                _flowerTransform.localScale = _stageScales[_currentStage];
+                Debug.Log($"Flower advanced to stage {_currentStage + 1}");
+            }
         }
 
-        public void Plant()
+        private void Plant() => Debug.Log("Flower planted!");
+
+        public void Harvest()
         {
-            // Показываем первую стадию сразу после посадки
-            ShowNextStage();
-            Debug.Log("Flower planted!");
+            if (!_isFullyGrown)
+            {
+                Debug.Log("Flower is not ready to harvest yet!");
+                return;
+            }
+
+            DropSeeds();
+            Destroy(gameObject);
+            Debug.Log("Flower harvested!");
         }
+
+        private void DropSeeds() => Seed.DropSeeds(transform.position, _seedsDropped, _seedPrefab);
     }
 }

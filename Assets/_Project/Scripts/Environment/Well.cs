@@ -4,40 +4,35 @@ namespace _Project.Scripts.Environment
 {
     public class Well : MonoBehaviour
     {
-        [SerializeField] private float interactionRadius = 2.0f;
+        [Header("Settings")]
+        [SerializeField] private float _interactionRadius = 2.0f;
 
-        private void Update()
+        private SphereCollider _triggerCollider;
+
+        private void Start()
         {
-            TryFillBucketInHand();
+            _triggerCollider = GetComponent<SphereCollider>();
+            if (_triggerCollider == null)
+            {
+                _triggerCollider = gameObject.AddComponent<SphereCollider>();
+            }
+            _triggerCollider.isTrigger = true;
+            _triggerCollider.radius = _interactionRadius;
         }
 
-        private void TryFillBucketInHand()
+        private void OnTriggerStay(Collider other)
         {
-            var results = new Collider[10];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, interactionRadius, results);
-
-
-            for (int i = 0; i < size; i++)
+            if (other.TryGetComponent(out Bucket bucket) && !bucket.HasWater)
             {
-                if (!results[i].TryGetComponent(out Bucket bucket))
-                {
-                    continue;
-                }
-                
-                if (!bucket.IsCarried || bucket.HasWater)
-                {
-                    continue;
-                }
-
                 bucket.HasWater = true;
-                Debug.Log($"Bucket {bucket.name} was filled while being carried!");
+                Debug.Log($"Bucket {bucket.name} was filled in well trigger zone!");
             }
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, interactionRadius);
+            Gizmos.DrawWireSphere(transform.position, _interactionRadius);
         }
     }
 }

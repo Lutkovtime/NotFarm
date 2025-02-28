@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMovement: {fileID: 5712541986406857156}
+  _playerInteractions: {fileID: 8086593776529412293}
 --- !u!114 &8086593776529412293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,14 +324,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b258a72387f4e3d47a59e4e31e99f969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionDistance: 2
-  interactionLayer:
+  _interactionDistance: 2
+  _interactionLayer:
     serializedVersion: 2
     m_Bits: 512
-  interactionPoint: {fileID: 7659901644891906598}
-  inventory: {fileID: 7763586384369091668}
-  inventoryCanvas: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  _interactionPoint: {fileID: 7659901644891906598}
+  _inventory: {fileID: 7763586384369091668}
 --- !u!114 &7763586384369091668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d170502285799d418d3c2b8664b6682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 9
+  <MaxSlots>k__BackingField: 9
   inventoryUI: {fileID: 0}
 --- !u!114 &6674157640810644575
 MonoBehaviour:
