@@ -1,6 +1,6 @@
-using _Project.Scripts.Interface;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace _Project.Scripts.UI
 {
@@ -8,6 +8,7 @@ namespace _Project.Scripts.UI
     {
         [SerializeField] private RectTransform _slotContainer;
         [SerializeField] private GameObject _slotPrefab;
+        [SerializeField] private Sprite _seedIcon;
 
         public void InitializeSlots(int slotCount)
         {
@@ -20,30 +21,65 @@ namespace _Project.Scripts.UI
             {
                 GameObject slot = Instantiate(_slotPrefab, _slotContainer);
                 slot.name = $"Slot_{i}";
-                UpdateSlot(i, null);
+                ClearSlot(slot.transform);
             }
         }
 
-        public void UpdateSlot(int slotIndex, GameObject item)
+        public void UpdateSlots(List<ItemType> items)
         {
-            if (slotIndex < 0 || slotIndex >= _slotContainer.childCount)
+            for (int i = 0; i < _slotContainer.childCount; i++)
             {
-                Debug.LogError($"Invalid slot index: {slotIndex}");
-                return;
+                ClearSlot(_slotContainer.GetChild(i));
             }
 
-            Transform slot = _slotContainer.GetChild(slotIndex);
-            Image icon = slot.GetComponent<Image>();
-
-            if (item != null && item.TryGetComponent(out IInventoryItem inventoryItem))
+            for (int i = 0; i < items.Count; i++)
             {
-                icon.sprite = inventoryItem.Icon;
-                icon.enabled = true;
+                if (i >= _slotContainer.childCount)
+                {
+                    Debug.LogError("Not enough slots to display all items!");
+                    break;
+                }
+
+                Transform slot = _slotContainer.GetChild(i);
+                Image icon = slot.GetComponentInChildren<Image>();
+                Text countText = slot.GetComponentInChildren<Text>();
+
+                if (icon != null)
+                {
+                    icon.sprite = GetIconForItem(items[i]);
+                    icon.enabled = true;
+                }
+
             }
-            else
+        }
+
+        private void ClearSlot(Transform slot)
+        {
+            Image icon = slot.GetComponentInChildren<Image>();
+            Text countText = slot.GetComponentInChildren<Text>();
+
+            if (icon != null)
             {
                 icon.sprite = null;
                 icon.enabled = false;
+            }
+
+            if (countText != null)
+            {
+                countText.text = "";
+                countText.enabled = false;
+            }
+        }
+
+        private Sprite GetIconForItem(ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case ItemType.Seed:
+                    return _seedIcon;
+                default:
+                    Debug.LogError($"No icon defined for {itemType}");
+                    return null;
             }
         }
     }

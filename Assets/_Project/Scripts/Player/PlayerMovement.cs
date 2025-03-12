@@ -2,29 +2,41 @@ using UnityEngine;
 
 namespace _Project.Scripts.Player
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Camera mainCamera;
-        [SerializeField] private PlayerStats playerStats;
-        private Vector3 movement;
+        [Header("Settings")]
+        [SerializeField] private float _moveSpeed = 5f;
+        [SerializeField] private float _gravity = -9.81f;
 
-        private void Start()
+        private CharacterController _controller;
+        private Vector3 _velocity;
+
+        private void Awake()
         {
-            mainCamera = Camera.main;
-            playerStats = GetComponent<PlayerStats>();
+            _controller = GetComponent<CharacterController>();
+            if (_controller == null)
+            {
+                Debug.LogError("CharacterController not found on PlayerMovement!");
+            }
         }
 
-        public void Movement(Vector3 direction)
+        public void Move(Vector3 direction)
         {
-            movement = direction.normalized;
-
-            transform.Translate(movement * (playerStats.MovementSpeed * Time.deltaTime), Space.World);
-
-            if (movement == Vector3.zero)
+            if (_controller == null)
+            {
                 return;
+            }
 
-            transform.forward = movement;
+            if (_controller.isGrounded && _velocity.y < 0)
+            {
+                _velocity.y = -2f;
+            }
+
+            _controller.Move(direction * (_moveSpeed * Time.deltaTime));
+
+            _velocity.y += _gravity * Time.deltaTime;
+            _controller.Move(_velocity * Time.deltaTime);
         }
     }
 }

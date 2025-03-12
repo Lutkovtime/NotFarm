@@ -4,6 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - _seedPrefab: {fileID: 6827677119986774918, guid: 7c15eb62b2df1c947bdb2e2a9e89affc, type: 3}
   - <Icon>k__BackingField: {fileID: 21300000, guid: e73e823a1aa26e34b93402c67e68d08b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}

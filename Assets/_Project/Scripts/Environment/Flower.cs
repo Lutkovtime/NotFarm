@@ -8,19 +8,22 @@ namespace _Project.Scripts.Environment
         [SerializeField] private Transform _flowerTransform;
         [SerializeField] private float _timePerStage = 10f;
         [SerializeField] private Vector3[] _stageScales = { 
-            new Vector3(0.1f, 0.1f, 0.1f), 
-            new Vector3(0.5f, 0.5f, 0.5f), 
-            new Vector3(1f, 1f, 1f)
+            new(0.1f, 0.1f, 0.1f), 
+            new(0.5f, 0.5f, 0.5f), 
+            new(1f, 1f, 1f)
         };
 
         [Header("Seed Settings")]
-        [SerializeField] private GameObject _seedPrefab;
+        [SerializeField] private Seed _seedPrefab; // Теперь Seed, а не GameObject
         [SerializeField] private int _seedsDropped = 2;
+        [SerializeField] private Inventory _inventory; // Для добавления семян в инвентарь
 
         private int _currentStage;
         private float _growthTimer;
         private GardenBed _gardenBed;
         private bool _isFullyGrown;
+
+        public bool IsFullyGrown => _isFullyGrown;
 
         public void Initialize(GardenBed gardenBed)
         {
@@ -36,58 +39,72 @@ namespace _Project.Scripts.Environment
                 enabled = false;
                 return;
             }
-
             _flowerTransform.localScale = _stageScales[0];
-            _currentStage = 0;
         }
 
         private void Update()
         {
-            if (_isFullyGrown) return;
-
-            if (_gardenBed.IsWet)
+            if (_isFullyGrown)
             {
-                _growthTimer += Time.deltaTime;
+                return;
+            }
 
-                if (_growthTimer >= _timePerStage)
-                {
-                    _growthTimer = 0;
-                    ShowNextStage();
-                }
+            _growthTimer += Time.deltaTime;
+            if (_growthTimer >= _timePerStage)
+            {
+                _growthTimer = 0;
+                ShowNextStage();
             }
         }
 
         private void ShowNextStage()
         {
             _currentStage++;
-
             if (_currentStage >= _stageScales.Length)
             {
                 _isFullyGrown = true;
-                Debug.Log("Flower is fully grown and ready to harvest!");
+                Debug.Log("Flower is fully grown!");
+                return;
             }
-            else
-            {
-                _flowerTransform.localScale = _stageScales[_currentStage];
-                Debug.Log($"Flower advanced to stage {_currentStage + 1}");
-            }
+            _flowerTransform.localScale = _stageScales[_currentStage];
         }
 
-        private void Plant() => Debug.Log("Flower planted!");
+        private void Plant()
+        {
+            Debug.Log("Flower planted!");
+        }
 
         public void Harvest()
         {
             if (!_isFullyGrown)
             {
-                Debug.Log("Flower is not ready to harvest yet!");
+                Debug.Log("Not ready to harvest!");
                 return;
             }
-
             DropSeeds();
+            _gardenBed.RemoveFlower();
             Destroy(gameObject);
-            Debug.Log("Flower harvested!");
         }
 
-        private void DropSeeds() => Seed.DropSeeds(transform.position, _seedsDropped, _seedPrefab);
+        private void DropSeeds()
+        {
+            for (int i = 0; i < _seedsDropped; i++)
+            {
+                if (_inventory != null && _inventory.AddItem(ItemType.Seed))
+                {
+                    Debug.Log("Seed added to inventory!");
+                }
+                else
+                {
+                    Vector3 spawnPosition = transform.position + new Vector3(
+                        Random.Range(-0.5f, 0.5f),
+                        0.5f,
+                        Random.Range(-0.5f, 0.5f)
+                    );
+                    Seed seed = Instantiate(_seedPrefab, spawnPosition, Quaternion.identity);
+                    Debug.Log("Seed dropped on ground!");
+                }
+            }
+        }
     }
 }

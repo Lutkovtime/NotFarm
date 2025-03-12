@@ -1,48 +1,42 @@
 using UnityEngine;
-using _Project.Scripts.Interface;
 
 namespace _Project.Scripts.Environment
 {
-    public class Seed : MonoBehaviour, IInventoryItem
+    public class Seed : MonoBehaviour
     {
-        private const float XZ_RANGE = 0.5f;
-        private const float Y_OFFSET = 0.5f;
+        [SerializeField] private float _pickupRadius = 1.5f;
+        [SerializeField] private Inventory _inventory;
 
-        [Header("Settings")]
-        [SerializeField] private GameObject _seedPrefab;
-        private bool _isBeingUsedForPlanting;
-
-        [field: SerializeField] public Sprite Icon { get; private set; }
-
-        public GameObject GameObject => gameObject;
-
-        public static void DropSeeds(Vector3 position, int count, GameObject seedPrefab)
+        private void Update()
         {
-            for (int i = 0; i < count; i++)
+            var colliders = Physics.OverlapSphere(
+                transform.position,
+                _pickupRadius,
+                LayerMask.GetMask("Player")
+            );
+
+            if (colliders.Length > 0)
             {
-                Vector3 offset = new Vector3(
-                    Random.Range(-XZ_RANGE, XZ_RANGE),
-                    Y_OFFSET,
-                    Random.Range(-XZ_RANGE, XZ_RANGE)
-                );
-                Instantiate(seedPrefab, position + offset, Quaternion.identity);
+                OnPickUp();
             }
         }
 
-        public void OnPickUp() => gameObject.SetActive(false);
-
-        public void OnDrop(Vector3 dropPosition)
+        private void OnPickUp()
         {
-            if (_isBeingUsedForPlanting) return;
-            
-            transform.position = dropPosition;
-            gameObject.SetActive(true);
+            if (_inventory != null && _inventory.AddItem(ItemType.Seed))
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("Failed to pick up seed!");
+            }
         }
 
-        public void MarkForPlanting()
+        private void OnDrawGizmosSelected()
         {
-            _isBeingUsedForPlanting = true;
-            Destroy(gameObject);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _pickupRadius);
         }
     }
 }

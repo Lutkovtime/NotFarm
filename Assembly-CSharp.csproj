@@ -46,19 +46,18 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.37f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Project\Scripts\Interface\IInventoryItem.cs" />
     <Compile Include="Assets\_Project\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\_Project\Scripts\Player\PlayerInteractions.cs" />
-    <Compile Include="Assets\_Project\Scripts\Inventory\Inventory.cs" />
     <Compile Include="Assets\_Project\Scripts\Environment\Flower.cs" />
     <Compile Include="Assets\_Project\Scripts\Environment\GardenBed.cs" />
+    <Compile Include="Assets\_Project\Scripts\ItemType.cs" />
     <Compile Include="Assets\_Project\Scripts\Environment\Bucket.cs" />
     <Compile Include="Assets\_Project\Scripts\UI\InventoryUI.cs" />
     <Compile Include="Assets\_Project\Scripts\Player\PlayerStats.cs" />
     <Compile Include="Assets\_Project\Scripts\Player\PlayerMovement.cs" />
-    <Compile Include="Assets\_Project\Scripts\Interface\ITool.cs" />
     <Compile Include="Assets\_Project\Scripts\TopDownCamera.cs" />
     <Compile Include="Assets\_Project\Scripts\Environment\Seed.cs" />
+    <Compile Include="Assets\_Project\Scripts\Inventory.cs" />
     <Compile Include="Assets\_Project\Scripts\Environment\Well.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.0.37f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

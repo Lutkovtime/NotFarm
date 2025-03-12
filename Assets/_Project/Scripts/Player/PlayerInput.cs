@@ -11,7 +11,7 @@ namespace _Project.Scripts.Player
 
         [SerializeField] private PlayerMovement _playerMovement;
         [SerializeField] private PlayerInteractions _playerInteractions;
-        [SerializeField] private Inventory.Inventory _inventory;
+        [SerializeField] private Inventory _inventory;
         [SerializeField] private GameObject _inventoryUI;
 
         private void Update()
@@ -26,8 +26,8 @@ namespace _Project.Scripts.Player
             float horizontal = Input.GetAxisRaw(HORIZONTAL_AXIS);
             float vertical = Input.GetAxisRaw(VERTICAL_AXIS);
 
-            Vector3 direction = new Vector3(horizontal, 0, vertical);
-            _playerMovement.Movement(direction);
+            Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+            _playerMovement.Move(direction);
         }
 
         private void HandleInteractionInput()
@@ -42,7 +42,10 @@ namespace _Project.Scripts.Player
         {
             if (Input.GetKeyDown(INVENTORY_KEY))
             {
-                _inventoryUI.SetActive(!_inventoryUI.activeSelf);
+                if (_inventoryUI != null)
+                {
+                    _inventoryUI.SetActive(!_inventoryUI.activeSelf);
+                }
             }
         }
     }

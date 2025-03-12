@@ -1,5 +1,4 @@
 using UnityEngine;
-using _Project.Scripts.Player;
 
 namespace _Project.Scripts.Environment
 {
@@ -15,8 +14,6 @@ namespace _Project.Scripts.Environment
         private float _wetTimer;
         private MeshRenderer _meshRenderer;
         private Flower _currentFlower;
-        private bool _playerInTrigger;
-
         public bool IsWet { get; private set; }
 
         private void Start()
@@ -35,8 +32,6 @@ namespace _Project.Scripts.Environment
                     SetDry();
                 }
             }
-
-            CheckAndWater();
         }
 
         private void SetDry()
@@ -62,32 +57,9 @@ namespace _Project.Scripts.Environment
             }
         }
 
-        private void CheckAndWater()
-        {
-            var results = new Collider[10];
-            int size = Physics.OverlapSphereNonAlloc(transform.position, _interactionRadius, results);
-
-            for (int i = 0; i < size; i++)
-            {
-                if (results[i].TryGetComponent(out Bucket bucket) && bucket.IsCarried && bucket.HasWater)
-                {
-                    WaterPlot();
-                    bucket.HasWater = false;
-                    Debug.Log($"{bucket.name} watered the garden bed.");
-                    return;
-                }
-            }
-        }
-
         public bool TryPlantSeed()
         {
-            if (!_playerInTrigger)
-            {
-                Debug.Log("Player not in garden bed area");
-                return false;
-            }
-
-            if (_currentFlower is not null)
+            if (_currentFlower != null)
             {
                 Debug.Log("There is already a flower planted here.");
                 return false;
@@ -106,20 +78,9 @@ namespace _Project.Scripts.Environment
             return true;
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void RemoveFlower()
         {
-            if (other.TryGetComponent<PlayerInteractions>(out _))
-            {
-                _playerInTrigger = true;
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent<PlayerInteractions>(out _))
-            {
-                _playerInTrigger = false;
-            }
+            _currentFlower = null;
         }
 
         private void OnDrawGizmosSelected()

@@ -504,6 +504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotContainer: {fileID: 706161668}
   _slotPrefab: {fileID: 5101984833673743025, guid: b358f7f51042e41469b2230f4de35eee, type: 3}
+  _seedIcon: {fileID: 0}
 --- !u!114 &921629524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,6 +731,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GardenBed
       objectReference: {fileID: 0}
+    - target: {fileID: 8097874426060275056, guid: c162242a0a974594f9fdcd9c2c6eead3, type: 3}
+      propertyPath: _inventory
+      value: 
+      objectReference: {fileID: 8332907610071118216}
     - target: {fileID: 8097874426060275056, guid: c162242a0a974594f9fdcd9c2c6eead3, type: 3}
       propertyPath: _dryMaterial
       value: 
@@ -1023,6 +1028,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1789294812152349527, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5672539553896587123, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5712541986406857156, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
       propertyPath: mainCamera
       value: 
@@ -1030,6 +1043,10 @@ PrefabInstance:
     - target: {fileID: 5750714109688558335, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
       propertyPath: m_Name
       value: Farmer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5750714109688558335, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7763586384369091668, guid: cedecdb905f5dde4891becb525a4b129, type: 3}
       propertyPath: inventoryUI
